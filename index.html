@@ -214,10 +214,36 @@
                     <a href="#products" class="text-gray-600 hover:text-sage-700 font-medium transition">Shop</a>
                     <a href="https://rzp.io/rzp/jgpk1lc" target="_blank" class="bg-sage-900 text-white px-6 py-2 rounded-full font-medium hover:bg-sage-700 transition shadow-lg">Buy Now</a>
                 </div>
+                <!-- Mobile Menu Button with ID -->
                 <div class="md:hidden flex items-center">
-                    <button class="text-gray-600"><i class="fas fa-bars text-2xl"></i></button>
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-sage-700 focus:outline-none p-2">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
                 </div>
             </div>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 w-full bg-white border-b border-gray-100 shadow-lg py-4 px-6 flex flex-col space-y-4 z-40">
+            <a href="#science" class="text-gray-600 hover:text-sage-700 font-medium py-2 border-b border-gray-50">The Science</a>
+            
+            <!-- Mobile Mental Health Accordion -->
+            <div class="text-gray-600 font-medium">
+                <div class="flex justify-between items-center py-2 border-b border-gray-50 cursor-pointer" onclick="toggleMobileSubmenu()">
+                    <span>Mental Health</span>
+                    <i id="mobile-chevron" class="fas fa-chevron-down text-xs transition-transform duration-300"></i>
+                </div>
+                <div id="mobile-submenu" class="hidden pl-4 mt-2 space-y-3 text-sm bg-sage-50 rounded-lg p-3">
+                    <a href="#" class="block hover:text-sage-700">Upcoming Events</a>
+                    <a href="#" class="block hover:text-sage-700">Giveaways</a>
+                    <a href="#" class="block hover:text-sage-700">Org Works</a>
+                    <a href="#" class="block hover:text-sage-700">Community Resources</a>
+                </div>
+            </div>
+
+            <a href="#dosage" class="text-gray-600 hover:text-sage-700 font-medium py-2 border-b border-gray-50">Dosage</a>
+            <a href="#products" class="text-gray-600 hover:text-sage-700 font-medium py-2 border-b border-gray-50">Shop</a>
+            <a href="https://rzp.io/rzp/jgpk1lc" target="_blank" class="bg-sage-900 text-white px-6 py-3 rounded-xl font-medium text-center shadow-md">Buy Now</a>
         </div>
     </nav>
 
@@ -545,6 +571,26 @@
 
     <!-- LOGIC -->
     <script>
+        // --- Mobile Menu Toggle Logic ---
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileSubmenu = document.getElementById('mobile-submenu');
+        const mobileChevron = document.getElementById('mobile-chevron');
+
+        if (mobileBtn && mobileMenu) {
+            mobileBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                // Optional: Animate icon change (hamburger to X) could be added here
+            });
+        }
+
+        function toggleMobileSubmenu() {
+            if (mobileSubmenu) {
+                mobileSubmenu.classList.toggle('hidden');
+                mobileChevron.classList.toggle('rotate-180');
+            }
+        }
+
         // --- 1. Canvas Animation (Floating Leaves) ---
         const canvas = document.getElementById('leaf-canvas');
         const ctx = canvas.getContext('2d');
