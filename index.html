@@ -101,50 +101,54 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* SENTINEL CHATBOT - Neo Brutalist */
+        /* SENTINEL CHATBOT - Clean Sage Theme */
         #sentinel-widget {
             position: fixed; bottom: 2rem; right: 2rem; z-index: 9999;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'DM Sans', sans-serif;
         }
         #sentinel-btn {
-            width: 60px; height: 60px; background-color: #000000; border: 2px solid #000000;
+            width: 60px; height: 60px; background-color: #1a2e26; border: none;
             cursor: pointer; display: flex; justify-content: center; align-items: center;
-            transition: transform 0.2s; box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+            transition: all 0.3s; box-shadow: 0 4px 15px rgba(26, 46, 38, 0.3);
+            border-radius: 50%;
         }
-        #sentinel-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px rgba(0,0,0,0.3); }
+        #sentinel-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(26, 46, 38, 0.4); }
         #status-dot {
-            width: 12px; height: 12px; background-color: #00FF00; border-radius: 50%;
-            box-shadow: 0 0 10px #00FF00; animation: pulse 2s infinite;
+            width: 12px; height: 12px; background-color: #8FBC8F; border-radius: 50%;
+            box-shadow: 0 0 10px #8FBC8F; animation: pulse 2s infinite;
         }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.1); } 100% { opacity: 1; transform: scale(1); } }
         
         #sentinel-window {
             position: absolute; bottom: 80px; right: 0; width: 350px; height: 500px;
-            background-color: #000000; color: #FFFFFF; border: 2px solid #000000;
-            display: none; flex-direction: column; box-shadow: -10px 10px 20px rgba(0,0,0,0.2);
+            background-color: #ffffff; color: #2F3E46; border: 1px solid #e3ebe3;
+            display: none; flex-direction: column; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-radius: 16px; overflow: hidden;
         }
         #sentinel-header {
-            padding: 15px; border-bottom: 1px solid #333; font-weight: bold;
-            display: flex; justify-content: space-between; align-items: center; background: #111;
-            font-size: 14px; letter-spacing: 1px;
+            padding: 16px 20px; font-weight: bold; color: white;
+            display: flex; justify-content: space-between; align-items: center; background: #1a2e26;
+            font-size: 16px; letter-spacing: 0.5px; font-family: 'Playfair Display', serif;
         }
         #sentinel-messages {
-            flex-grow: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px;
+            flex-grow: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px;
+            background-color: #f9f7f2;
         }
-        .msg { max-width: 85%; padding: 8px 12px; font-size: 12px; line-height: 1.4; }
-        .msg-bot { align-self: flex-start; border: 1px solid #333; background: #000; color: #00FF00; }
-        .msg-user { align-self: flex-end; background: #FFFFFF; color: #000000; border: 1px solid #FFFFFF; font-weight: bold; }
+        .msg { max-width: 80%; padding: 12px 16px; font-size: 13px; line-height: 1.5; border-radius: 12px; }
+        .msg-bot { align-self: flex-start; background: #ffffff; color: #2F3E46; border: 1px solid #e3ebe3; border-top-left-radius: 2px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .msg-user { align-self: flex-end; background: #52796F; color: #ffffff; border-bottom-right-radius: 2px; box-shadow: 0 2px 4px rgba(82, 121, 111, 0.2); }
         
-        #sentinel-input-area { padding: 15px; border-top: 1px solid #333; display: flex; gap: 10px; background: #111; }
+        #sentinel-input-area { padding: 15px; border-top: 1px solid #e3ebe3; display: flex; gap: 10px; background: #ffffff; }
         #sentinel-input {
-            flex-grow: 1; background: #000; border: 1px solid #333; color: #FFF; padding: 8px;
-            font-family: 'Courier New', Courier, monospace; outline: none; font-size: 12px;
+            flex-grow: 1; background: #f4f7f4; border: 1px solid #e3ebe3; color: #2F3E46; padding: 10px 14px;
+            font-family: 'DM Sans', sans-serif; outline: none; font-size: 13px; border-radius: 20px;
         }
-        #sentinel-input:focus { border-color: #00FF00; }
+        #sentinel-input:focus { border-color: #8FBC8F; background: white; }
         #sentinel-send {
-            background: #00FF00; color: #000; border: none; padding: 0 15px; font-weight: bold;
-            cursor: pointer; font-family: 'Courier New', Courier, monospace;
+            background: #1a2e26; color: white; border: none; width: 36px; height: 36px; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s;
         }
+        #sentinel-send:hover { background: #52796F; }
     </style>
 </head>
 <body class="antialiased overflow-x-hidden">
@@ -521,19 +525,23 @@
     <div id="sentinel-widget">
         <div id="sentinel-window">
             <div id="sentinel-header">
-                <span>SENTINEL // SYSTEM ONLINE</span>
-                <button onclick="toggleChat()" class="text-white hover:text-green-500">×</button>
+                <span><i class="fas fa-leaf mr-2 text-sage-300"></i> Sentinel Assistant</span>
+                <button onclick="toggleChat()" class="text-white hover:text-sage-300 transition"><i class="fas fa-times"></i></button>
             </div>
             <div id="sentinel-messages">
-                <div class="msg msg-bot">INITIALIZING...<br>I am SENTINEL. Dosage and Product Specialist.<br>State your objective (Focus, Sleep, Pain).</div>
+                <div class="msg msg-bot">
+                    <strong>Welcome to Heliom.</strong><br>
+                    I am Sentinel, your dosage specialist.<br>
+                    How can I help you optimise your wellness today? (e.g., Focus, Sleep, Safety)
+                </div>
             </div>
             <form id="sentinel-input-area" onsubmit="handleChat(event)">
-                <input type="text" id="sentinel-input" placeholder="CMD_INPUT..." autocomplete="off">
-                <button type="submit" id="sentinel-send">></button>
+                <input type="text" id="sentinel-input" placeholder="Ask about products or dosage..." autocomplete="off">
+                <button type="submit" id="sentinel-send"><i class="fas fa-paper-plane text-xs"></i></button>
             </form>
         </div>
         <div id="sentinel-btn" onclick="toggleChat()">
-            <div id="status-dot"></div>
+            <span class="text-2xl animate-pulse">👋</span>
         </div>
     </div>
 
