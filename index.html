@@ -3,49 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Heliom | Medical Cannabis & Wellness</title>
+    <title>Heliom Wellness | Science-Backed Holistic Healing</title>
+    
+    <!-- Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
     
+    <!-- Config -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         sage: {
-                            50: '#F5F7F5',
-                            100: '#EBF2EB',
-                            200: '#DAE3DA',
-                            300: '#CAD2C5',
-                            500: '#84A98C',
-                            600: '#6B8C7A',
+                            50: '#f4f7f4',
+                            100: '#e3ebe3',
+                            300: '#8FBC8F',
+                            500: '#6B8E23',
                             700: '#52796F',
-                            800: '#3F5E56',
-                            900: '#354F52',
+                            800: '#2F3E46',
+                            900: '#1a2e26',
                         },
-                        gold: { 400: '#D4AF37', 500: '#C5A028' },
-                        warning: { 100: '#FEF2F2', 700: '#B91C1C', 800: '#991B1B' }
+                        cream: '#f9f7f2'
                     },
                     fontFamily: {
                         sans: ['DM Sans', 'sans-serif'],
                         serif: ['Playfair Display', 'serif'],
-                    },
-                    animation: {
-                        'fade-in-up': 'fadeInUp 0.5s ease-out',
-                        'pulse-glow': 'pulseGlow 2s infinite',
-                        'unlock-burst': 'unlockBurst 1s forwards',
-                    },
-                    keyframes: {
-                        fadeInUp: {
-                            '0%': { opacity: '0', transform: 'translateY(10px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        },
-                        pulseGlow: {
-                            '0%, 100%': { boxShadow: '0 0 10px rgba(212, 175, 55, 0.2)' },
-                            '50%': { boxShadow: '0 0 25px rgba(212, 175, 55, 0.6)' },
-                        }
                     }
                 }
             }
@@ -53,254 +38,274 @@
     </script>
 
     <style>
-        body { background-color: #F5F7F5; color: #2F3E46; overflow-x: hidden; }
         html { scroll-behavior: smooth; }
+        body { background-color: #f9f7f2; color: #2F3E46; }
         
-        /* Age Gate Modal */
-        #age-gate {
-            backdrop-filter: blur(15px);
+        /* Intro Overlay */
+        #intro-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #1a2e26; z-index: 9999;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.8s ease-out, visibility 0.8s;
         }
+        .intro-logo-container {
+            text-align: center; opacity: 0; transform: scale(0.9);
+            animation: fadeInZoom 1.2s forwards ease-out;
+        }
+        @keyframes fadeInZoom {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .fade-out { opacity: 0; visibility: hidden; }
 
         /* Canvas Background */
-        #leaf-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.3; pointer-events: none; }
-
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(132, 169, 140, 0.3);
-            box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.05);
+        #leaf-canvas {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; pointer-events: none; opacity: 0.4;
         }
 
-        .chart-container { position: relative; width: 100%; max-width: 600px; margin: 0 auto; height: 300px; max-height: 400px; }
-        @media (min-width: 768px) { .chart-container { height: 350px; } }
+        /* Chart Containers */
+        .chart-container { position: relative; width: 100%; height: 300px; }
 
         /* Custom Range Slider */
         input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
         input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%;
-            background: #52796F; cursor: pointer; margin-top: -10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2); border: 2px solid #fff;
+            -webkit-appearance: none; height: 20px; width: 20px;
+            border-radius: 50%; background: #52796F; cursor: pointer;
+            margin-top: -8px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
-        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; cursor: pointer; background: #CAD2C5; border-radius: 3px; }
-
-        /* Vault Styles */
-        .vault-lock-overlay {
-            position: absolute; inset: 0; background: rgba(245, 247, 245, 0.85);
-            backdrop-filter: blur(8px); z-index: 20; display: flex;
-            flex-direction: column; align-items: center; justify-content: center;
-            transition: opacity 0.8s ease;
-        }
-        .vault-unlocked .vault-lock-overlay { opacity: 0; pointer-events: none; }
-        .product-card {
-            background: white; border: 1px solid #EBF2EB; border-radius: 16px;
-            overflow: hidden; transition: all 0.4s ease; position: relative;
-        }
-        .vault-unlocked .product-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.08); border-color: #84A98C; }
-        .product-detail { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
-        .vault-unlocked .product-card:hover .product-detail { max-height: 200px; }
-
-        /* Red Box Warning Class */
-        .red-box-warning {
-            border: 1px solid #B91C1C;
-            background-color: #FEF2F2;
-            color: #991B1B;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            padding: 1rem;
-            text-align: center;
-            border-radius: 0.5rem;
-            margin-bottom: 2rem;
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%; height: 4px; cursor: pointer;
+            background: #CAD2C5; border-radius: 2px;
         }
 
-        /* Chatbot */
-        .chat-widget { position: fixed; bottom: 20px; right: 20px; z-index: 90; }
-        .chat-window {
+        /* Product Cards */
+        .product-card { transition: all 0.4s ease; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        
+        /* Coming Soon Grayscale */
+        .coming-soon-img { filter: grayscale(100%); transition: filter 0.3s ease; }
+        .coming-soon-card:hover .coming-soon-img { filter: grayscale(0%); }
+
+        /* Modal */
+        #notify-modal.hidden { opacity: 0; pointer-events: none; }
+        #notify-modal:not(.hidden) { opacity: 1; pointer-events: auto; }
+
+        /* Dropdown Animation */
+        .group:hover .group-hover\:block {
+            display: block;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* SENTINEL CHATBOT - Neo Brutalist */
+        #sentinel-widget {
+            position: fixed; bottom: 2rem; right: 2rem; z-index: 9999;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        #sentinel-btn {
+            width: 60px; height: 60px; background-color: #000000; border: 2px solid #000000;
+            cursor: pointer; display: flex; justify-content: center; align-items: center;
+            transition: transform 0.2s; box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+        }
+        #sentinel-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px rgba(0,0,0,0.3); }
+        #status-dot {
+            width: 12px; height: 12px; background-color: #00FF00; border-radius: 50%;
+            box-shadow: 0 0 10px #00FF00; animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        
+        #sentinel-window {
             position: absolute; bottom: 80px; right: 0; width: 350px; height: 500px;
-            background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-            display: flex; flex-direction: column; overflow: hidden; border: 1px solid #EBF2EB;
-            transform-origin: bottom right; transition: all 0.3s ease; opacity: 0;
-            transform: scale(0.9) translateY(20px); pointer-events: none;
+            background-color: #000000; color: #FFFFFF; border: 2px solid #000000;
+            display: none; flex-direction: column; box-shadow: -10px 10px 20px rgba(0,0,0,0.2);
         }
-        .chat-window.open { opacity: 1; transform: scale(1) translateY(0); pointer-events: all; }
-        .message { max-width: 85%; padding: 12px 16px; border-radius: 16px; font-size: 14px; line-height: 1.5; margin-bottom: 10px;}
-        .bot-msg { background: #EBF2EB; color: #2F3E46; border-bottom-left-radius: 4px; align-self: flex-start; }
-        .user-msg { background: #52796F; color: white; border-bottom-right-radius: 4px; align-self: flex-end; }
+        #sentinel-header {
+            padding: 15px; border-bottom: 1px solid #333; font-weight: bold;
+            display: flex; justify-content: space-between; align-items: center; background: #111;
+            font-size: 14px; letter-spacing: 1px;
+        }
+        #sentinel-messages {
+            flex-grow: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px;
+        }
+        .msg { max-width: 85%; padding: 8px 12px; font-size: 12px; line-height: 1.4; }
+        .msg-bot { align-self: flex-start; border: 1px solid #333; background: #000; color: #00FF00; }
+        .msg-user { align-self: flex-end; background: #FFFFFF; color: #000000; border: 1px solid #FFFFFF; font-weight: bold; }
+        
+        #sentinel-input-area { padding: 15px; border-top: 1px solid #333; display: flex; gap: 10px; background: #111; }
+        #sentinel-input {
+            flex-grow: 1; background: #000; border: 1px solid #333; color: #FFF; padding: 8px;
+            font-family: 'Courier New', Courier, monospace; outline: none; font-size: 12px;
+        }
+        #sentinel-input:focus { border-color: #00FF00; }
+        #sentinel-send {
+            background: #00FF00; color: #000; border: none; padding: 0 15px; font-weight: bold;
+            cursor: pointer; font-family: 'Courier New', Courier, monospace;
+        }
     </style>
 </head>
-<body class="antialiased text-dark overflow-hidden" id="main-body">
+<body class="antialiased overflow-x-hidden">
 
-    <!-- 1. MANDATORY AGE GATE (Critical) -->
-    <div id="age-gate" class="fixed inset-0 z-[100] bg-sage-900/95 flex flex-col items-center justify-center p-4 text-center">
-        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-2xl max-w-lg w-full">
-            <div class="mb-6">
-                 <!-- Heliom Icon -->
-                 <div class="w-16 h-16 bg-sage-700 rounded-xl flex items-center justify-center mx-auto mb-4">
-                    <i class="fa-solid fa-cannabis text-white text-3xl"></i>
-                </div>
-                <h1 class="text-3xl font-serif font-bold text-sage-900 mb-2">Age Verification</h1>
-                <p class="text-gray-500">Access to this site is restricted to individuals of legal age.</p>
-            </div>
-            
-            <p class="text-sage-800 font-medium mb-8 text-lg">Are you 21 years of age or older?</p>
-            
-            <div class="flex flex-col gap-3">
-                <button onclick="enterSite()" class="w-full py-4 bg-sage-800 hover:bg-sage-900 text-white font-bold rounded-lg transition shadow-lg text-lg">
-                    Yes, I am 21+
-                </button>
-                <button onclick="alert('You must be of legal age to view this content.')" class="w-full py-4 bg-transparent border border-gray-300 text-gray-500 font-medium rounded-lg hover:bg-gray-50 transition">
-                    No, Exit
-                </button>
-            </div>
-            <p class="mt-6 text-xs text-gray-400">
-                By entering, you agree to our Terms of Service and acknowledge that this website provides information about Ayurvedic medicines.
-            </p>
+    <!-- 1. INTRO ANIMATION -->
+    <div id="intro-overlay">
+        <div class="intro-logo-container">
+            <div class="text-white text-6xl mb-4"><i class="fas fa-leaf"></i></div>
+            <h1 class="text-4xl md:text-6xl text-white font-bold tracking-widest uppercase font-serif">Heliom</h1>
+            <p class="text-sage-300 text-sm md:text-lg tracking-[0.5em] mt-2 uppercase">Wellness</p>
         </div>
     </div>
 
-    <!-- Background Canvas -->
-    <canvas id="leaf-canvas"></canvas>
-
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 glass-panel border-b border-sage-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20">
-                <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0,0)">
-                    <div class="relative w-10 h-10 flex items-center justify-center bg-sage-700 rounded-lg shadow-lg">
-                        <i class="fa-solid fa-cannabis text-white text-xl z-10"></i>
-                    </div>
-                    <span class="text-3xl font-serif font-extrabold text-sage-900 tracking-tight">Heliom<span class="text-sage-500">.</span></span>
+    <!-- 2. NEWSLETTER MODAL (Hidden) -->
+    <div id="notify-modal" class="fixed inset-0 z-[10000] hidden flex items-center justify-center transition-opacity duration-300">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full mx-4 relative transform z-10">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fas fa-times text-xl"></i></button>
+            <div class="text-center" id="modal-form-content">
+                <div class="w-16 h-16 bg-sage-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-flask text-2xl text-sage-700"></i>
                 </div>
-                <div class="hidden lg:flex items-center space-x-6">
-                    <button onclick="scrollToSection('science')" class="text-gray-600 hover:text-sage-700 font-medium transition">The Science</button>
-                    <button onclick="scrollToSection('therapeutic')" class="text-gray-600 hover:text-sage-700 font-medium transition">Therapeutics</button>
-                    <button onclick="scrollToSection('vault')" class="text-sage-700 font-bold transition flex items-center gap-1"><i class="fa-solid fa-lock text-xs"></i> The Vault</button>
-                    <button onclick="scrollToSection('contact')" class="px-5 py-2.5 bg-sage-900 text-white rounded-full hover:bg-sage-700 transition shadow-lg text-sm font-semibold tracking-wide">
-                        Consult Doctor
-                    </button>
+                <h3 class="text-2xl font-bold text-sage-900 mb-2">The Lab Access</h3>
+                <p class="text-gray-500 mb-6 text-sm" id="modal-product-name">Join the waitlist for exclusive formulations.</p>
+                <form onsubmit="handleSubscribe(event)" class="space-y-4">
+                    <input type="email" id="email-input" required placeholder="Enter your email" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-sage-500 outline-none transition bg-gray-50">
+                    <button type="submit" class="w-full bg-sage-900 text-white font-bold py-3 rounded-lg hover:bg-sage-700 transition">Notify Me</button>
+                </form>
+            </div>
+            <div class="text-center hidden" id="modal-success-content">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"><i class="fas fa-check text-2xl text-green-600"></i></div>
+                <h3 class="text-2xl font-bold text-sage-900 mb-2">You're on the list!</h3>
+                <p class="text-gray-500 mb-6">Watch your inbox for early access.</p>
+                <button onclick="closeModal()" class="w-full border border-gray-300 text-gray-600 font-bold py-3 rounded-lg hover:bg-gray-50">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. NAVIGATION -->
+    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md shadow-sm transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <span class="text-sage-900 text-2xl font-bold tracking-wider font-serif flex items-center gap-2">
+                        <i class="fas fa-leaf text-sage-500"></i> HELIOM
+                    </span>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center font-sans">
+                    <a href="#science" class="text-gray-600 hover:text-sage-700 font-medium transition">The Science</a>
+                    
+                    <!-- Mental Health Dropdown -->
+                    <div class="relative group h-full flex items-center">
+                        <button class="text-gray-600 hover:text-sage-700 font-medium transition flex items-center gap-1 focus:outline-none">
+                            Mental Health <i class="fas fa-chevron-down text-xs mt-1 ml-1"></i>
+                        </button>
+                        <div class="absolute top-full left-0 mt-0 w-48 bg-white rounded-xl shadow-xl py-2 hidden group-hover:block border border-gray-100 z-50">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-sage-50 hover:text-sage-900">Upcoming Events</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-sage-50 hover:text-sage-900">Giveaways</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-sage-50 hover:text-sage-900">Org Works</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-sage-50 hover:text-sage-900">Community Resources</a>
+                        </div>
+                    </div>
+
+                    <a href="#dosage" class="text-gray-600 hover:text-sage-700 font-medium transition">Dosage</a>
+                    <a href="#products" class="text-gray-600 hover:text-sage-700 font-medium transition">Shop</a>
+                    <a href="https://rzp.io/rzp/jgpk1lc" target="_blank" class="bg-sage-900 text-white px-6 py-2 rounded-full font-medium hover:bg-sage-700 transition shadow-lg">Buy Now</a>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button class="text-gray-600"><i class="fas fa-bars text-2xl"></i></button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="relative pt-36 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto min-h-[90vh] flex items-center">
-        <div class="max-w-3xl animate-fade-in-up">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sage-100 text-sage-800 text-sm font-bold mb-8 border border-sage-300 shadow-sm">
-                <span class="w-2 h-2 rounded-full bg-sage-500 animate-pulse"></span>
-                Ayurvedic Proprietary Medicine
-            </div>
-            <h1 class="text-5xl md:text-7xl font-serif font-bold text-sage-900 mb-8 leading-[1.1]">
-                Wellness Through <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-sage-600 to-sage-900">Plant Science</span>
+    <!-- 4. HERO SECTION (With Canvas Background) -->
+    <section id="home" class="relative pt-20 h-screen min-h-[600px] flex items-center justify-center overflow-hidden bg-sage-50">
+        <!-- Animated Background -->
+        <canvas id="leaf-canvas"></canvas>
+        
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+            <span class="inline-block py-1 px-3 rounded-full bg-sage-900/10 text-sage-900 text-sm font-bold tracking-widest mb-6 border border-sage-900/20">BIO-HACKED WELLNESS</span>
+            <h1 class="text-5xl md:text-7xl font-bold text-sage-900 mb-6 leading-tight font-serif">
+                Restore Your <br><span class="text-sage-500 italic font-light">Natural Balance</span>
             </h1>
-            <p class="text-xl text-gray-600 mb-10 leading-relaxed max-w-2xl">
-                Exploring the therapeutic potential of Vijaya (Hemp) extracts in managing stress, anxiety, and sleep disorders under medical guidance.
+            <p class="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
+                Precision tools for the modern mind. We combine ancient Vijaya extracts with modern dosage science to help you focus, rest, and recover.
             </p>
-            <div class="flex flex-col sm:flex-row gap-4">
-                <button onclick="scrollToSection('therapeutic')" class="px-8 py-4 bg-sage-700 text-white rounded-xl shadow-xl hover:bg-sage-800 transition transform hover:-translate-y-1 font-semibold text-lg flex items-center justify-center gap-2">
-                    View Research <i class="fa-solid fa-book-medical text-sm"></i>
-                </button>
-                <button onclick="scrollToSection('contact')" class="px-8 py-4 bg-white text-sage-800 border-2 border-sage-200 rounded-xl shadow-sm hover:border-sage-400 hover:bg-sage-50 transition font-semibold text-lg flex items-center justify-center gap-2">
-                    Book Consultation <i class="fa-solid fa-user-doctor"></i>
-                </button>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#products" class="bg-sage-900 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-sage-800 transition shadow-xl min-w-[180px]">Shop Collection</a>
+                <a href="#science" class="bg-white border-2 border-sage-200 text-sage-900 px-8 py-4 rounded-full font-bold text-lg hover:bg-sage-50 transition min-w-[180px]">Learn The Science</a>
             </div>
         </div>
     </section>
 
-    <!-- Section: The Science (Unchanged visually, stricter text) -->
-    <section id="science" class="py-24 bg-white/80 border-y border-sage-200">
+    <!-- 5. THE SCIENCE (Educational Authority) -->
+    <section id="science" class="py-20 bg-white border-y border-sage-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-serif font-bold text-sage-900 mb-4">The Mechanism: Endocannabinoid System</h2>
-                <div class="w-20 h-1 bg-sage-500 mx-auto mb-6"></div>
-                <p class="text-gray-600 max-w-2xl mx-auto text-lg">
-                    Scientific understanding of how plant compounds interact with our biological network to help maintain homeostasis.
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-sage-900 mb-4">Why It Works: The ECS</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Before you buy, understand your body. The Endocannabinoid System (ECS) is your internal regulator for stress, sleep, and mood.
                 </p>
             </div>
+
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <div class="space-y-6">
-                    <div class="p-8 bg-sage-50 rounded-2xl border border-sage-200">
-                        <div class="flex items-start gap-4">
-                            <div class="w-12 h-12 bg-sage-200 rounded-full flex items-center justify-center text-sage-800 text-2xl">🧠</div>
-                            <div>
-                                <h3 class="text-xl font-bold text-sage-900 mb-2">CB1 Receptors</h3>
-                                <p class="text-gray-600">Primarily in the central nervous system. Interaction may aid in mood regulation and stress management.</p>
-                            </div>
-                        </div>
+                    <div class="p-6 bg-sage-50 rounded-xl border border-sage-200 hover:shadow-md transition">
+                        <h3 class="text-xl font-bold text-sage-900 mb-2">🧠 CB1 Receptors (Focus)</h3>
+                        <p class="text-gray-700">Found in the brain. When activated by <strong class="text-sage-700">Heliom Flow</strong>, they modulate anxiety and sharpen focus without sedation.</p>
                     </div>
-                    <div class="p-8 bg-white rounded-2xl border border-sage-200 shadow-sm">
-                        <div class="flex items-start gap-4">
-                            <div class="w-12 h-12 bg-sage-100 rounded-full flex items-center justify-center text-sage-800 text-2xl">🛡️</div>
-                            <div>
-                                <h3 class="text-xl font-bold text-sage-900 mb-2">CB2 Receptors</h3>
-                                <p class="text-gray-600">Found in the immune system. Research suggests a role in managing inflammation.</p>
-                            </div>
-                        </div>
+                    <div class="p-6 bg-white rounded-xl border border-sage-200 shadow-sm hover:shadow-md transition">
+                        <h3 class="text-xl font-bold text-sage-900 mb-2">🛡️ CB2 Receptors (Recovery)</h3>
+                        <p class="text-gray-700">Found in the body. When targeted by <strong class="text-sage-700">Heliom Pro</strong>, they reduce inflammation and promote deep physical relaxation.</p>
                     </div>
                 </div>
-                <div class="relative h-96 bg-sage-900 rounded-3xl p-10 text-white flex flex-col justify-center items-center shadow-2xl overflow-hidden">
-                     <i class="fa-solid fa-scale-balanced text-5xl text-sage-300 mb-6"></i>
-                    <div class="text-4xl font-serif font-bold mb-2">Homeostasis</div>
-                    <p class="text-sage-200 mb-8 font-light">Internal Physiological Balance</p>
+                <!-- Visual Representation -->
+                <div class="relative h-80 bg-sage-900 rounded-2xl p-8 text-white flex flex-col justify-center items-center shadow-2xl overflow-hidden">
+                    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+                    <div class="z-10 text-center">
+                        <div class="text-4xl font-serif font-bold mb-2">Homeostasis</div>
+                        <div class="w-16 h-1 bg-sage-500 mx-auto mb-4"></div>
+                        <p class="text-sage-100 mb-8">The state of steady internal conditions.</p>
+                        <div class="flex justify-center gap-4 text-xs md:text-sm font-semibold">
+                            <div class="px-4 py-2 bg-sage-700 rounded-lg">Mood</div>
+                            <div class="px-4 py-2 bg-sage-700 rounded-lg">Sleep</div>
+                            <div class="px-4 py-2 bg-sage-700 rounded-lg">Immunity</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Section: Therapeutic Dashboard (Claims Updated) -->
-    <section id="therapeutic" class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="mb-12">
-            <h2 class="text-3xl md:text-4xl font-serif font-bold text-sage-900 mb-4">Clinical Applications</h2>
-            <p class="text-gray-600 max-w-3xl">
-                Medical cannabis is studied for its potential in <strong>managing</strong> specific conditions.
-            </p>
-        </div>
-
-        <div class="flex flex-col md:flex-row gap-8">
-            <div class="md:w-1/4 flex flex-col space-y-3">
-                <button onclick="updateTherapy('anxiety')" id="tab-anxiety" class="therapy-tab w-full p-5 text-left rounded-xl bg-sage-800 text-white shadow-lg font-semibold flex justify-between items-center group">
-                    <span>Stress & Anxiety</span> <i class="fa-solid fa-chevron-right text-xs"></i>
-                </button>
-                <button onclick="updateTherapy('ptsd')" id="tab-ptsd" class="therapy-tab w-full p-5 text-left rounded-xl bg-white text-gray-600 hover:bg-sage-100 font-medium border border-gray-100">PTSD Management</button>
-                <button onclick="updateTherapy('depression')" id="tab-depression" class="therapy-tab w-full p-5 text-left rounded-xl bg-white text-gray-600 hover:bg-sage-100 font-medium border border-gray-100">Depression Support</button>
-                <button onclick="updateTherapy('sleep')" id="tab-sleep" class="therapy-tab w-full p-5 text-left rounded-xl bg-white text-gray-600 hover:bg-sage-100 font-medium border border-gray-100">Sleep Aid</button>
-            </div>
-            <div class="md:w-3/4 glass-panel rounded-3xl p-8 lg:p-10 flex flex-col lg:flex-row gap-10 shadow-xl">
-                <div class="lg:w-1/2 flex flex-col justify-between">
-                    <div>
-                        <h3 id="therapy-title" class="text-3xl font-serif font-bold text-sage-900 mb-6">Stress Management</h3>
-                        <div id="therapy-content" class="text-gray-600 space-y-4 leading-relaxed text-lg"></div>
-                    </div>
-                </div>
-                <div class="lg:w-1/2 flex flex-col justify-center bg-white rounded-2xl p-4 shadow-inner border border-sage-100">
-                    <div class="chart-container"><canvas id="therapyChart"></canvas></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Section: Dosage -->
-    <section id="dosage" class="py-24 bg-sage-50 border-y border-sage-200">
+    <!-- 6. INTERACTIVE DOSAGE SIMULATOR (Value Add) -->
+    <section id="dosage" class="py-20 bg-sage-50 border-b border-sage-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid md:grid-cols-2 gap-16 items-center">
                 <div class="order-2 md:order-1">
-                     <div class="chart-container bg-white p-6 rounded-3xl shadow-lg border border-sage-100">
+                     <div class="chart-container bg-white p-4 rounded-xl shadow-lg border border-sage-100">
                         <canvas id="biphasicChart"></canvas>
                     </div>
                 </div>
                 <div class="order-1 md:order-2">
-                    <div class="inline-block px-3 py-1 bg-sage-200 text-sage-800 rounded text-xs font-bold mb-4 uppercase">Medical Concept</div>
-                    <h2 class="text-3xl md:text-4xl font-serif font-bold text-sage-900 mb-6">The "Biphasic Effect"</h2>
-                    <p class="text-gray-600 mb-8 text-lg">
-                        Dosage dictates effect. Medical supervision is essential to find the therapeutic window and avoid adverse effects.
+                    <h2 class="text-3xl font-serif font-bold text-sage-900 mb-4">Dosage Dictates Effect</h2>
+                    <p class="text-gray-600 mb-6">
+                        Cannabis follows a "Biphasic Effect." Use this simulator to understand why we formulated <strong>Flow</strong> (Micro-dose) and <strong>Pro</strong> (Macro-dose) differently.
                     </p>
-                    <div class="bg-white p-8 rounded-2xl shadow-md border border-sage-200">
-                        <label class="text-sm font-bold text-sage-900 uppercase tracking-wide">Dosage Sensitivity</label>
-                        <input type="range" id="doseSlider" min="0" max="100" value="20" class="my-6">
-                        <div class="flex items-center gap-4 p-4 bg-sage-50 rounded-xl border border-sage-100">
-                            <div id="dose-status" class="w-4 h-4 rounded-full bg-green-500 shadow-sm shrink-0"></div>
-                            <p id="dose-feedback" class="font-bold text-sage-900">Therapeutic Zone.</p>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-sage-200">
+                        <label class="block text-sm font-bold text-sage-700 mb-2">Simulate Dosage Level:</label>
+                        <input type="range" id="doseSlider" min="0" max="100" value="20" class="mb-4">
+                        
+                        <div class="flex justify-between text-xs text-gray-500 mb-4">
+                            <span>Micro (Flow)</span>
+                            <span>Standard</span>
+                            <span>Macro (Pro)</span>
+                        </div>
+
+                        <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+                            <div id="dose-status" class="w-3 h-3 rounded-full bg-green-500 flex-shrink-0"></div>
+                            <p id="dose-feedback" class="font-medium text-sage-900 text-sm">Optimal Zone: Anxiety Reduced, Focus Sharpened.</p>
                         </div>
                     </div>
                 </div>
@@ -308,303 +313,500 @@
         </div>
     </section>
 
-    <!-- Section: Strain & Method Guide (Updated for Safety) -->
-    <section id="guide" class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-4xl font-serif font-bold text-sage-900 mb-4">Formulation Guide</h2>
-            <p class="text-gray-600">Understanding different Ayurvedic preparations.</p>
-        </div>
-        <div class="grid lg:grid-cols-3 gap-8">
-            <div class="col-span-1 bg-white p-8 rounded-3xl shadow-lg border border-sage-100">
-                <h3 class="text-xl font-bold text-sage-900 mb-6 flex items-center gap-2">
-                    <i class="fa-solid fa-sliders text-sage-500"></i> Symptom Focus
-                </h3>
-                <div class="space-y-3">
-                    <button onclick="recommend('energy')" class="rec-btn w-full text-left px-5 py-4 rounded-xl border border-gray-100 bg-gray-50 hover:border-sage-500 hover:bg-white transition-all group">
-                        <span class="font-bold text-gray-800 block">Focus & Clarity</span>
-                    </button>
-                    <button onclick="recommend('relax')" class="rec-btn w-full text-left px-5 py-4 rounded-xl border border-gray-100 bg-gray-50 hover:border-sage-500 hover:bg-white transition-all group">
-                        <span class="font-bold text-gray-800 block">Severe Stress/Anxiety</span>
-                    </button>
-                    <button onclick="recommend('sleep')" class="rec-btn w-full text-left px-5 py-4 rounded-xl border border-gray-100 bg-gray-50 hover:border-sage-500 hover:bg-white transition-all group">
-                        <span class="font-bold text-gray-800 block">Insomnia</span>
-                    </button>
-                    <button onclick="recommend('balance')" class="rec-btn w-full text-left px-5 py-4 rounded-xl border border-gray-100 bg-gray-50 hover:border-sage-500 hover:bg-white transition-all group">
-                        <span class="font-bold text-gray-800 block">General Balance</span>
-                    </button>
-                </div>
-            </div>
-            <div class="col-span-2 bg-gradient-to-br from-sage-800 to-sage-900 text-white p-10 rounded-3xl shadow-2xl flex flex-col justify-center relative overflow-hidden min-h-[450px]">
-                <div id="recommendation-content" class="relative z-10">
-                    <h4 class="text-sage-300 text-sm font-bold uppercase tracking-wider mb-2">Suggestion</h4>
-                    <h2 class="text-4xl font-serif font-bold mb-6">Select a symptom</h2>
-                    <p class="text-sage-100 text-lg max-w-md">We will suggest the appropriate formulation type.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- THE HELIOM VAULT (Marketplace) - 2. RESTRICTED FLOW & 3. WARNING BOX -->
-    <section id="vault" class="relative py-24 bg-sage-900 text-white overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-            
-            <!-- Locked Overlay -->
-            <div id="vault-overlay" class="vault-lock-overlay rounded-3xl">
-                <div class="text-center p-8 animate-fade-in-up">
-                    <div class="mb-6 relative inline-block">
-                        <i class="fa-solid fa-lock text-6xl text-gold-400"></i>
-                    </div>
-                    <h2 class="text-4xl md:text-5xl font-serif font-bold text-sage-900 mb-2">The Heliom Vault</h2>
-                    <p class="text-sage-600 italic mb-8 font-serif text-lg">Coming Soon to the Light</p>
-                    <button onclick="unlockVault()" class="px-10 py-4 bg-gradient-to-r from-gold-400 to-gold-500 text-white rounded-full font-bold text-lg shadow-xl hover:scale-105 transition transform flex items-center gap-3 mx-auto">
-                        Unlock Ecosystem <i class="fa-solid fa-sun"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Red Box Warning (Hidden until unlocked) -->
-            <div id="legal-warning-banner" class="hidden mb-12">
-                <div class="red-box-warning">
-                    <i class="fa-solid fa-triangle-exclamation mr-2"></i> Schedule E(1) Drug - Caution: To be taken under medical supervision only.
-                </div>
-                <div class="text-center text-white mb-8">
-                    <h2 class="text-4xl font-serif font-bold mb-4">The Solar Ecosystem</h2>
-                    <p class="text-sage-200">One Plant. Infinite Solutions.</p>
-                </div>
-            </div>
-
-            <!-- Product Grid -->
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                
-                <!-- Category 1: Nutrition -->
-                <div class="product-card group p-6">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="p-3 bg-green-100 rounded-full text-green-700"><i class="fa-solid fa-bowl-food text-2xl"></i></div>
-                        <span class="text-xs font-bold text-sage-400 uppercase">Raw Fuel</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-sage-900 mb-2">Hemp Hearts</h3>
-                    <p class="text-sm text-gray-500 mb-4">Shelled Seeds | High Protein Nutrition.</p>
-                    <button class="w-full py-2 bg-sage-100 text-sage-800 rounded font-bold hover:bg-sage-200 mt-2">View Details</button>
-                </div>
-
-                <!-- Category 2: Skin (Cosmetic is usually safe, but sticking to medical theme) -->
-                <div class="product-card group p-6">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="p-3 bg-blue-100 rounded-full text-blue-700"><i class="fa-solid fa-hand-sparkles text-2xl"></i></div>
-                        <span class="text-xs font-bold text-sage-400 uppercase">Outer Armor</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-sage-900 mb-2">Moon Balm</h3>
-                    <p class="text-sm text-gray-500 mb-4">Pain Relief Salve | Vijaya Extract.</p>
-                    <div class="text-xs text-red-600 font-bold mb-2 uppercase">Prescription Required</div>
-                    <button class="w-full py-2 bg-sage-800 text-white rounded font-bold hover:bg-sage-700 mt-2 flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-user-doctor"></i> Consult to Order
-                    </button>
-                </div>
-
-                <!-- Category 3: Pet Care -->
-                <div class="product-card group p-6 bg-yellow-50/50">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="p-3 bg-yellow-100 rounded-full text-yellow-700"><i class="fa-solid fa-dog text-2xl"></i></div>
-                        <span class="text-xs font-bold text-sage-400 uppercase">Silent Companions</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-sage-900 mb-2">Heliom Paws</h3>
-                    <p class="text-sm text-gray-500 mb-4">Veterinary Formula.</p>
-                    <div class="text-xs text-red-600 font-bold mb-2 uppercase">Vet Consultation Req.</div>
-                    <button class="w-full py-2 bg-sage-800 text-white rounded font-bold hover:bg-sage-700 mt-2 flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-user-doctor"></i> Consult to Order
-                    </button>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer & Contact Section (Updated Disclaimer) -->
-    <section id="contact" class="py-20 bg-white border-t border-sage-200">
+    <!-- 7. PRODUCTS SECTION (E-Commerce) -->
+    <section id="products" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-2 gap-12 lg:gap-24">
-                <div>
-                    <div class="flex items-center gap-2 mb-6">
-                        <i class="fa-solid fa-cannabis text-sage-700 text-2xl"></i>
-                        <span class="text-2xl font-serif font-bold text-sage-900">Heliom.</span>
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-5xl font-serif font-bold text-sage-900 mb-4">The Collection</h2>
+                <p class="text-gray-500 text-lg">Bio-hacked formulations for specific outcomes.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-24">
+                
+                <!-- PRODUCT 1: FLOW -->
+                <div class="product-card bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm flex flex-col h-full group">
+                    <div class="relative h-64 overflow-hidden bg-gray-100">
+                        <img src="https://i.ibb.co/Q7pskbmT/1-1.jpg&auto=format&fit=crop&w=800&q=80" alt="Heliom Flow" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <div class="absolute top-4 left-4 bg-sage-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">Daytime</div>
                     </div>
-                    <div class="space-y-4">
-                        <h4 class="font-bold text-sage-900 uppercase tracking-wide text-sm mb-4">Medical Consultation</h4>
-                        <div class="flex items-start gap-4">
-                            <div class="w-10 h-10 bg-sage-50 rounded-full flex items-center justify-center text-sage-700 shrink-0"><i class="fa-solid fa-user-doctor"></i></div>
-                            <div><div class="font-bold text-gray-900">Adithya Reddy</div><div class="text-sm text-gray-500">Consultant</div></div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <h3 class="text-2xl font-bold text-sage-900 font-serif">HELIOM FLOW</h3>
+                        <p class="text-sage-500 font-medium text-sm mb-4">1:1 Ratio • Focus & Anxiety</p>
+                        <div class="prose prose-sm text-gray-600 mb-6 flex-grow">
+                            <p class="mb-2 text-sm">Lowers cognitive load without compromising alertness. Clears the fog, kills the jitters.</p>
+                            <ul class="text-sm list-disc pl-4 space-y-1 mb-4 text-gray-500">
+                                <li><strong>Effect:</strong> Flow State Activation.</li>
+                                <li><strong>Use:</strong> 4-6 drops, pre-work.</li>
+                            </ul>
                         </div>
-                        <div class="flex items-start gap-4">
-                            <div class="w-10 h-10 bg-sage-50 rounded-full flex items-center justify-center text-sage-700 shrink-0"><i class="fa-solid fa-phone"></i></div>
-                            <div><div class="font-bold text-gray-900">+91 90594 73960</div></div>
-                        </div>
-                         <div class="flex items-start gap-4">
-                            <div class="w-10 h-10 bg-sage-50 rounded-full flex items-center justify-center text-sage-700 shrink-0"><i class="fa-solid fa-envelope"></i></div>
-                            <div><div class="font-bold text-gray-900">info@heliom.org</div></div>
-                        </div>
+                        <a href="https://rzp.io/rzp/jgpk1lc" target="_blank" class="block w-full text-center bg-sage-900 text-white font-bold py-3 rounded-xl hover:bg-sage-700 transition duration-300 shadow-lg mt-auto">Buy Now</a>
                     </div>
                 </div>
-                <div class="bg-sage-50 p-8 rounded-3xl border border-sage-100">
-                    <h3 class="text-xl font-bold text-sage-900 mb-6">Legal Disclaimer</h3>
-                    <div class="space-y-4 text-xs text-gray-500 text-justify">
-                        <p><strong>CAUTION:</strong> This product is not intended to diagnose, treat, cure, or prevent any disease. The information contained herein is not intended to cover all possible uses, directions, precautions, warnings, drug interactions, allergic reactions, or adverse effects.</p>
-                        <p><strong>USAGE:</strong> Usage as per Ayurvedic text / Proprietary medicine. To be taken under medical supervision.</p>
-                        <p><strong>SCHEDULE E(1):</strong> Contains ingredients specified in Schedule E(1) of the Drugs and Cosmetics Act, 1940.</p>
+
+                <!-- PRODUCT 2: PRO -->
+                <div class="product-card bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm flex flex-col h-full group">
+                    <div class="relative h-64 overflow-hidden bg-gray-900">
+                        <img src="https://i.ibb.co/Xk8THXwB/1-2.jpg&auto=format&fit=crop&w=800&q=80" alt="Heliom Pro" class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition duration-500">
+                        <div class="absolute top-4 left-4 bg-gray-900 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide border border-gray-600">Nighttime</div>
                     </div>
-                    <div class="mt-8 pt-6 border-t border-sage-200 text-center text-xs text-gray-400">© 2026 Heliom Research.</div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <h3 class="text-2xl font-bold text-sage-900 font-serif">HELIOM PRO</h3>
+                        <p class="text-sage-500 font-medium text-sm mb-4">High Potency • Insomnia & Pain</p>
+                        <div class="prose prose-sm text-gray-600 mb-6 flex-grow">
+                            <p class="mb-2 text-sm">Clinical-Grade Formulation. THC-dominant. Designed to force the body into deep rest.</p>
+                            <ul class="text-sm list-disc pl-4 space-y-1 mb-4 text-gray-500">
+                                <li><strong>Effect:</strong> Rapid Sleep Onset.</li>
+                                <li><strong>Use:</strong> 2 drops to start.</li>
+                            </ul>
+                        </div>
+                        <a href="https://rzp.io/rzp/jgpk1lc" target="_blank" class="block w-full text-center bg-gray-900 text-white font-bold py-3 rounded-xl hover:bg-black transition duration-300 shadow-lg mt-auto">Buy Now</a>
+                    </div>
+                </div>
+
+                <!-- PRODUCT 3: SYSTEM -->
+                <div class="product-card bg-gradient-to-br from-cream to-white border border-sage-300 rounded-2xl overflow-hidden shadow-lg flex flex-col h-full transform md:-translate-y-4 relative z-10">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-sage-900 to-sage-500"></div>
+                    <div class="relative h-64 overflow-hidden bg-gray-200">
+                        <img src="https://i.ibb.co/S4CrZWs3/unnamed-1.jpg&auto=format&fit=crop&w=800&q=80" alt="Heliom System" class="w-full h-full object-cover">
+                        <div class="absolute top-4 left-4 bg-sage-900 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide shadow-md">Best Value</div>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <h3 class="text-2xl font-bold text-sage-900 font-serif">HELIOM SYSTEM</h3>
+                        <p class="text-sage-500 font-medium text-sm mb-4">The Day & Night Stack</p>
+                        <div class="prose prose-sm text-gray-600 mb-6 flex-grow">
+                            <p class="mb-2 text-sm">Total control over your 24-hour neurochemistry. Includes FLOW (Day) and PRO (Night).</p>
+                            <ul class="text-sm list-disc pl-4 space-y-1 mb-4 text-gray-500">
+                                <li><strong>Includes:</strong> 1x Flow + 1x Pro.</li>
+                                <li><strong>Advantage:</strong> Save ₹2,000 Instantly.</li>
+                            </ul>
+                        </div>
+                        <a href="https://rzp.io/rzp/jgpk1lc" target="_blank" class="block w-full text-center bg-gradient-to-r from-sage-900 to-sage-700 text-white font-bold py-3 rounded-xl hover:opacity-95 transition duration-300 mt-auto">Get The System</a>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Chatbot Widget -->
-    <div class="chat-widget">
-        <div id="chat-window" class="chat-window">
-            <div class="chat-header">
-                <div class="flex items-center gap-2"><div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div><span class="font-bold">Heliom Medical</span></div>
-                <button onclick="toggleChat()" class="text-white hover:text-sage-200"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div id="chat-messages" class="chat-body">
-                <div class="message bot-msg">Welcome. How can we assist with your consultation today?</div>
-                <div id="faq-options" class="mt-2">
-                     <button onclick="handleFAQ('vault')" class="faq-btn">🛍️ How to order?</button>
-                    <button onclick="handleFAQ('safety')" class="faq-btn">⚠️ Is it safe?</button>
-                    <button onclick="handleFAQ('contact')" class="faq-btn">📞 Speak to Doctor</button>
+    <!-- 8. PRODUCT MATCHER (Repurposed Strain Guide) -->
+    <section class="py-20 bg-sage-900 text-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Selector -->
+                <div class="col-span-1 bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20">
+                    <h3 class="text-xl font-bold mb-6 font-serif">What's your goal?</h3>
+                    <div class="space-y-4">
+                        <button onclick="recommend('energy')" class="w-full text-left px-4 py-3 rounded-lg border border-white/20 hover:bg-white/10 transition-colors focus:bg-sage-500 focus:border-sage-500">⚡ Focus & Work</button>
+                        <button onclick="recommend('relax')" class="w-full text-left px-4 py-3 rounded-lg border border-white/20 hover:bg-white/10 transition-colors focus:bg-sage-500 focus:border-sage-500">🧘 Anxiety Relief</button>
+                        <button onclick="recommend('sleep')" class="w-full text-left px-4 py-3 rounded-lg border border-white/20 hover:bg-white/10 transition-colors focus:bg-sage-500 focus:border-sage-500">🌙 Deep Sleep</button>
+                        <button onclick="recommend('balance')" class="w-full text-left px-4 py-3 rounded-lg border border-white/20 hover:bg-white/10 transition-colors focus:bg-sage-500 focus:border-sage-500">⚖️ Full Reset</button>
+                    </div>
+                </div>
+                <!-- Result -->
+                <div class="col-span-2 flex flex-col justify-center" id="recommendation-content">
+                    <h4 class="text-sage-300 text-sm font-bold uppercase tracking-wider mb-2">Recommendation</h4>
+                    <h2 class="text-4xl font-serif font-bold mb-6">Select a goal to begin</h2>
+                    <p class="text-sage-100 text-lg">We will match you with the perfect formulation.</p>
                 </div>
             </div>
         </div>
-        <div class="chat-button" onclick="toggleChat()"><i class="fa-solid fa-comment-medical"></i></div>
+        <div class="absolute top-0 right-0 p-8 opacity-10 text-9xl"><i class="fas fa-leaf"></i></div>
+    </section>
+
+    <!-- 9. COMING SOON (The Lab) -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="bg-gray-100 text-gray-500 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-4 inline-block">The Lab</span>
+                <h2 class="text-3xl font-serif font-bold text-sage-900 mb-2">Future Formulations</h2>
+                <p class="text-gray-400">Join the waitlist for early access.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Item 1 -->
+                <div class="coming-soon-card group relative bg-gray-50 rounded-xl overflow-hidden border border-gray-100 flex flex-col">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://i.ibb.co/Y4MR8435/unnamed-4.jpg&auto=format&fit=crop&w=600&q=80" alt="Gummies" class="coming-soon-img w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center"><span class="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-1 rounded-full text-xs font-bold uppercase">Phase 2</span></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-bold text-gray-700">HELIOM CUBES</h3>
+                        <p class="text-xs font-bold text-sage-500 mb-2 uppercase">Edibles</p>
+                        <button onclick="openModal('Heliom Cubes')" class="w-full py-2 bg-white border border-gray-300 rounded-lg text-sage-900 text-sm font-medium hover:bg-sage-900 hover:text-white transition">Notify Me</button>
+                    </div>
+                </div>
+                <!-- Item 2 -->
+                <div class="coming-soon-card group relative bg-gray-50 rounded-xl overflow-hidden border border-gray-100 flex flex-col">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://i.ibb.co/9kpzRNXL/unnamed-5.jpg&auto=format&fit=crop&w=600&q=80" alt="Cream" class="coming-soon-img w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center"><span class="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-1 rounded-full text-xs font-bold uppercase">Phase 3</span></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-bold text-gray-700">HELIOM MEND</h3>
+                        <p class="text-xs font-bold text-sage-500 mb-2 uppercase">Topical</p>
+                        <button onclick="openModal('Heliom Mend')" class="w-full py-2 bg-white border border-gray-300 rounded-lg text-sage-900 text-sm font-medium hover:bg-sage-900 hover:text-white transition">Notify Me</button>
+                    </div>
+                </div>
+                <!-- Item 3 -->
+                <div class="coming-soon-card group relative bg-gray-50 rounded-xl overflow-hidden border border-gray-100 flex flex-col">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://i.ibb.co/JRLvQZHx/unnamed-3.jpg&auto=format&fit=crop&w=600&q=80" alt="Perfume" class="coming-soon-img w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center"><span class="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-1 rounded-full text-xs font-bold uppercase">Phase 4</span></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-bold text-gray-700">HELIOM ETHER</h3>
+                        <p class="text-xs font-bold text-sage-500 mb-2 uppercase">Lifestyle</p>
+                        <button onclick="openModal('Heliom Ether')" class="w-full py-2 bg-white border border-gray-300 rounded-lg text-sage-900 text-sm font-medium hover:bg-sage-900 hover:text-white transition">Notify Me</button>
+                    </div>
+                </div>
+
+                <!-- Item 4: Aura -->
+                <div class="coming-soon-card group relative bg-gray-50 rounded-xl overflow-hidden border border-gray-100 flex flex-col">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://i.ibb.co/f3Q8C32/unnamed-2.jpg&auto=format&fit=crop&w=600&q=80" alt="Cooling Gel" class="coming-soon-img w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center"><span class="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-1 rounded-full text-xs font-bold uppercase">Phase 5</span></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-bold text-gray-700">HELIOM AURA</h3>
+                        <p class="text-xs font-bold text-sage-500 mb-2 uppercase">Recovery</p>
+                        <button onclick="openModal('Heliom Aura')" class="w-full py-2 bg-white border border-gray-300 rounded-lg text-sage-900 text-sm font-medium hover:bg-sage-900 hover:text-white transition">Notify Me</button>
+                    </div>
+                </div>
+
+                <!-- Item 5: Tails -->
+                <div class="coming-soon-card group relative bg-gray-50 rounded-xl overflow-hidden border border-gray-100 flex flex-col">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Pet Line" class="coming-soon-img w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center"><span class="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-1 rounded-full text-xs font-bold uppercase">Phase 6</span></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-bold text-gray-700">HELIOM TAILS</h3>
+                        <p class="text-xs font-bold text-sage-500 mb-2 uppercase">Pet Line</p>
+                        <button onclick="openModal('Heliom Tails')" class="w-full py-2 bg-white border border-gray-300 rounded-lg text-sage-900 text-sm font-medium hover:bg-sage-900 hover:text-white transition">Notify Me</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. FOOTER -->
+    <footer class="bg-sage-900 text-white py-12 border-t border-sage-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 border-b border-sage-800 pb-8">
+                <div class="col-span-1 md:col-span-2">
+                    <h2 class="text-2xl font-bold tracking-wider font-serif mb-4 flex items-center gap-2">
+                        <i class="fas fa-leaf text-sage-500"></i> HELIOM
+                    </h2>
+                    <p class="text-gray-400 max-w-sm">Rooted in Nature, Backed by Science. Dedicated to bringing you the finest natural wellness products.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4 text-sage-300">Quick Links</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#science" class="hover:text-white transition">Science</a></li>
+                        <li><a href="#products" class="hover:text-white transition">Shop</a></li>
+                        <li><a href="#" class="hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4 text-sage-300">Contact</h4>
+                    <p class="text-gray-400">support@heliomwellness.com</p>
+                </div>
+            </div>
+            <div class="text-center text-gray-600 text-sm">
+                &copy; 2024 Heliom Wellness. <span class="block mt-2">Disclaimer: These products are not intended to diagnose, treat, cure or prevent any disease. Schedule E-1 Ayurvedic Medicine.</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 11. SENTINEL CHATBOT WIDGET -->
+    <div id="sentinel-widget">
+        <div id="sentinel-window">
+            <div id="sentinel-header">
+                <span>SENTINEL // SYSTEM ONLINE</span>
+                <button onclick="toggleChat()" class="text-white hover:text-green-500">×</button>
+            </div>
+            <div id="sentinel-messages">
+                <div class="msg msg-bot">INITIALIZING...<br>I am SENTINEL. Dosage and Product Specialist.<br>State your objective (Focus, Sleep, Pain).</div>
+            </div>
+            <form id="sentinel-input-area" onsubmit="handleChat(event)">
+                <input type="text" id="sentinel-input" placeholder="CMD_INPUT..." autocomplete="off">
+                <button type="submit" id="sentinel-send">></button>
+            </form>
+        </div>
+        <div id="sentinel-btn" onclick="toggleChat()">
+            <div id="status-dot"></div>
+        </div>
     </div>
 
-    <!-- Logic -->
+    <!-- LOGIC -->
     <script>
-        // 1. AGE GATE LOGIC
-        function enterSite() {
-            document.getElementById('main-body').classList.remove('overflow-hidden');
-            const gate = document.getElementById('age-gate');
-            gate.style.transition = 'opacity 0.5s ease';
-            gate.style.opacity = '0';
-            setTimeout(() => gate.style.display = 'none', 500);
-            initLeaves(); // Start animations only after entry
-        }
-
-        // 2. CANVAS ANIMATION (Leaves)
+        // --- 1. Canvas Animation (Floating Leaves) ---
         const canvas = document.getElementById('leaf-canvas');
         const ctx = canvas.getContext('2d');
         let leaves = [];
-        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
         class Leaf {
             constructor() {
-                this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 20 + 10; this.speedY = Math.random() * 0.5 + 0.2;
-                this.speedX = (Math.random() - 0.5) * 0.5; this.rotation = Math.random() * 360;
-                this.rotationSpeed = (Math.random() - 0.5) * 0.02; this.opacity = Math.random() * 0.3 + 0.1;
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 15 + 5; 
+                this.speedY = Math.random() * 0.3 + 0.1;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = (Math.random() - 0.5) * 0.01;
+                this.opacity = Math.random() * 0.3 + 0.1;
             }
             update() {
-                this.y -= this.speedY; this.x += this.speedX; this.rotation += this.rotationSpeed;
+                this.y -= this.speedY; 
+                this.x += this.speedX;
+                this.rotation += this.rotationSpeed;
                 if (this.y < -50) { this.y = canvas.height + 50; this.x = Math.random() * canvas.width; }
             }
             draw() {
-                ctx.save(); ctx.translate(this.x, this.y); ctx.rotate(this.rotation); ctx.globalAlpha = this.opacity;
-                ctx.fillStyle = '#84A98C'; ctx.beginPath(); ctx.moveTo(0, 0);
-                ctx.bezierCurveTo(-5, -10, -2, -this.size, 0, -this.size * 1.5); ctx.bezierCurveTo(2, -this.size, 5, -10, 0, 0);
-                ctx.rotate(-45 * Math.PI / 180); ctx.bezierCurveTo(-5, -10, -2, -this.size * 0.8, 0, -this.size * 1.2); ctx.bezierCurveTo(2, -this.size * 0.8, 5, -10, 0, 0);
-                ctx.rotate(-45 * Math.PI / 180); ctx.bezierCurveTo(-5, -5, -2, -this.size * 0.5, 0, -this.size * 0.7); ctx.bezierCurveTo(2, -this.size * 0.5, 5, -5, 0, 0);
-                ctx.rotate(90 * Math.PI / 180); ctx.rotate(45 * Math.PI / 180); ctx.bezierCurveTo(-5, -10, -2, -this.size * 0.8, 0, -this.size * 1.2); ctx.bezierCurveTo(2, -this.size * 0.8, 5, -10, 0, 0);
-                ctx.rotate(45 * Math.PI / 180); ctx.bezierCurveTo(-5, -5, -2, -this.size * 0.5, 0, -this.size * 0.7); ctx.bezierCurveTo(2, -this.size * 0.5, 5, -5, 0, 0);
-                ctx.fill(); ctx.restore();
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = '#6B8E23'; 
+                ctx.beginPath();
+                ctx.ellipse(0, 0, this.size, this.size/2, 0, 0, Math.PI*2);
+                ctx.fill();
+                ctx.restore();
             }
         }
-        function initLeaves() { resizeCanvas(); for (let i = 0; i < 35; i++) leaves.push(new Leaf()); animateLeaves(); }
-        function animateLeaves() { ctx.clearRect(0, 0, canvas.width, canvas.height); leaves.forEach(leaf => { leaf.update(); leaf.draw(); }); requestAnimationFrame(animateLeaves); }
+
+        function initLeaves() {
+            resizeCanvas();
+            for(let i=0; i<30; i++) leaves.push(new Leaf());
+            animateLeaves();
+        }
+        function animateLeaves() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            leaves.forEach(leaf => { leaf.update(); leaf.draw(); });
+            requestAnimationFrame(animateLeaves);
+        }
         window.addEventListener('resize', resizeCanvas);
+        initLeaves();
 
-        // 3. VAULT UNLOCK & WARNING DISPLAY
-        function unlockVault() {
-            const overlay = document.getElementById('vault-overlay');
-            const section = document.getElementById('vault');
-            const banner = document.getElementById('legal-warning-banner');
-            
-            const btn = overlay.querySelector('button');
-            btn.innerHTML = 'Verifying Access... <i class="fa-solid fa-spinner fa-spin"></i>';
-            
+        // --- 2. Intro Fade Out ---
+        window.addEventListener('load', () => {
             setTimeout(() => {
-                section.classList.add('vault-unlocked');
-                banner.classList.remove('hidden'); // Show Red Box Warning
-                banner.classList.add('animate-fade-in-up');
-                overlay.style.transition = 'all 1s ease';
-                overlay.style.opacity = '0';
-                overlay.style.transform = 'scale(1.1)';
-                setTimeout(() => { overlay.style.display = 'none'; }, 1000);
-            }, 800);
-        }
-
-        // 4. CHART & CONTENT LOGIC
-        Chart.defaults.font.family = "'DM Sans', sans-serif"; Chart.defaults.color = '#52796F';
-        const ctxTherapy = document.getElementById('therapyChart').getContext('2d');
-        let therapyChart = new Chart(ctxTherapy, {
-            type: 'radar',
-            data: { labels: ['Stress Relief', 'Sleep Quality', 'Mood', 'Focus', 'Relaxation'], datasets: [{ label: 'Potential', data: [90, 70, 60, 40, 80], backgroundColor: 'rgba(132, 169, 140, 0.4)', borderColor: '#52796F', pointBackgroundColor: '#354F52', borderWidth: 2 }] },
-            options: { responsive: true, maintainAspectRatio: false, scales: { r: { angleLines: { color: '#DAE3DA' }, grid: { color: '#EBF2EB' }, pointLabels: { font: { size: 12 }, color: '#354F52' }, suggestedMin: 0, suggestedMax: 100, ticks: { display: false } } }, plugins: { legend: { display: false } } }
+                const overlay = document.getElementById('intro-overlay');
+                overlay.classList.add('fade-out');
+                setTimeout(() => { overlay.style.display = 'none'; }, 800);
+            }, 2000);
         });
 
+        // --- 3. Navbar Scroll ---
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-md', 'bg-white');
+                navbar.classList.remove('bg-white/90');
+            } else {
+                navbar.classList.remove('shadow-md', 'bg-white');
+                navbar.classList.add('bg-white/90');
+            }
+        });
+
+        // --- 4. Chart.js (Biphasic) ---
         const ctxBiphasic = document.getElementById('biphasicChart').getContext('2d');
-        const biphasicData = []; const biphasicLabels = [];
-        for(let i=0; i<=100; i+=2) { biphasicLabels.push(i); let y = -0.05 * Math.pow(i - 40, 2) + 90; if (y < 0) y = -1 * Math.abs(y/2); biphasicData.push(y); }
-        let biphasicChart = new Chart(ctxBiphasic, {
-            type: 'line', data: { labels: biphasicLabels, datasets: [{ label: 'Therapeutic Benefit', data: biphasicData, borderColor: '#52796F', backgroundColor: 'rgba(82, 121, 111, 0.1)', fill: true, tension: 0.4, pointRadius: 0 }, { label: 'Simulated Dose', data: [{x: 20, y: 70}], pointRadius: 8, pointBackgroundColor: '#354F52', borderColor: '#fff', borderWidth: 3, type: 'scatter' }] },
-            options: { responsive: true, maintainAspectRatio: false, scales: { x: { display: false }, y: { display: false, min: -50, max: 100 } }, plugins: { legend: { display: false }, tooltip: { enabled: false } } }
+        const biphasicLabels = Array.from({length: 51}, (_, i) => i * 2);
+        const biphasicData = biphasicLabels.map(i => {
+            let y = -0.05 * Math.pow(i - 40, 2) + 90;
+            return y < 0 ? -1 * Math.abs(y/2) : y;
         });
 
-        const therapyData = {
-            anxiety: { title: "Stress Management", content: `<p class="mb-4">Research suggests interaction with <strong>CB1 receptors</strong> may dampen physiological stress responses.</p><p>Micro-dosing is often recommended in clinical practice to manage anxiety without adverse effects.</p>`, chartData: [90, 70, 60, 40, 80] },
-            ptsd: { title: "PTSD Symptom Management", content: `<p class="mb-4">Studies indicate potential in <strong>extinguishing traumatic memories</strong> by interfering with memory consolidation.</p>`, chartData: [85, 95, 50, 30, 75] },
-            depression: { title: "Depression Support", content: `<p class="mb-4">May aid in stimulating mood-regulating neurotransmitters to manage symptoms of <strong>anhedonia</strong>.</p>`, chartData: [40, 50, 95, 80, 40] },
-            sleep: { title: "Sleep Disorders", content: `<p class="mb-4">Formulations rich in sedating terpenes may help reduce sleep latency.</p>`, chartData: [60, 100, 40, 10, 95] }
-        };
-        updateTherapy('anxiety');
+        let biphasicChart = new Chart(ctxBiphasic, {
+            type: 'line',
+            data: {
+                labels: biphasicLabels,
+                datasets: [{
+                    label: 'Therapeutic Benefit',
+                    data: biphasicData,
+                    borderColor: '#52796F',
+                    backgroundColor: 'rgba(82, 121, 111, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 0
+                }, {
+                    label: 'Current Dose',
+                    data: [{x: 20, y: 70}],
+                    pointRadius: 8,
+                    pointBackgroundColor: '#1a2e26',
+                    type: 'scatter'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { type: 'linear', min: 0, max: 100, display: false },
+                    y: { display: false, min: -50, max: 100 }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
 
-        function updateTherapy(key) {
-            document.querySelectorAll('.therapy-tab').forEach(btn => btn.className = 'therapy-tab w-full p-5 text-left rounded-xl bg-white text-gray-600 hover:bg-sage-100 font-medium border border-gray-100');
-            document.getElementById(`tab-${key}`).className = 'therapy-tab w-full p-5 text-left rounded-xl bg-sage-800 text-white shadow-lg font-semibold flex justify-between items-center group';
-            const data = therapyData[key];
-            document.getElementById('therapy-title').innerText = data.title; document.getElementById('therapy-content').innerHTML = data.content;
-            therapyChart.data.datasets[0].data = data.chartData; therapyChart.update();
-        }
-
+        // --- 5. Slider Logic ---
         const slider = document.getElementById('doseSlider');
         const statusDot = document.getElementById('dose-status');
         const feedback = document.getElementById('dose-feedback');
+
         slider.addEventListener('input', (e) => {
-            const val = parseInt(e.target.value); let y = -0.05 * Math.pow(val - 40, 2) + 90; if (y < 0) y = -1 * Math.abs(y/2);
-            biphasicChart.data.datasets[1].data = [{x: val, y: y}]; biphasicChart.update('none');
-            if (val < 25) { statusDot.className = "w-4 h-4 rounded-full bg-green-500 shadow-sm shrink-0"; feedback.innerHTML = "Therapeutic Window."; feedback.className = "font-bold text-sage-900"; }
-            else if (val < 55) { statusDot.className = "w-4 h-4 rounded-full bg-yellow-500 shadow-sm shrink-0"; feedback.innerHTML = "Diminishing Returns."; feedback.className = "font-bold text-yellow-700"; }
-            else { statusDot.className = "w-4 h-4 rounded-full bg-red-500 shadow-sm shrink-0"; feedback.innerHTML = "Adverse Effects Risk."; feedback.className = "font-bold text-red-700"; }
+            const val = parseInt(e.target.value);
+            let y = -0.05 * Math.pow(val - 40, 2) + 90;
+            if (y < 0) y = -1 * Math.abs(y/2);
+
+            biphasicChart.data.datasets[1].data = [{x: val, y: y}];
+            biphasicChart.update('none');
+
+            if (val < 30) {
+                statusDot.className = "w-3 h-3 rounded-full bg-green-500 flex-shrink-0";
+                feedback.innerText = "Micro-Dose (Heliom Flow): Anxiety Reduced, Focus Sharpened.";
+            } else if (val < 60) {
+                statusDot.className = "w-3 h-3 rounded-full bg-yellow-500 flex-shrink-0";
+                feedback.innerText = "Standard Dose: Moderate relaxation, mild euphoria.";
+            } else {
+                statusDot.className = "w-3 h-3 rounded-full bg-purple-600 flex-shrink-0";
+                feedback.innerText = "Macro-Dose (Heliom Pro): Heavy sedation, deep sleep induction.";
+            }
         });
 
-        // Updated for SAFE LANGUAGE (No Inhalation)
+        // --- 6. Recommender Logic ---
         function recommend(goal) {
             const contentDiv = document.getElementById('recommendation-content');
-            let data = {};
-            if (goal === 'energy') data = { title: "Focus & Clarity", strain: "Sativa Dominant", method: "Sublingual Drops", desc: "Nano-emulsion for faster absorption without smoke." };
-            else if (goal === 'relax') data = { title: "Deep Relaxation", strain: "High CBD Formulation", method: "Oral Tincture", desc: "Sustained relief for managing severe stress." };
-            else if (goal === 'sleep') data = { title: "Sleep Aid", strain: "Indica Extract", method: "Softgel Capsule", desc: "Long-lasting effect to support sleep duration." };
-            else data = { title: "Balanced Relief", strain: "Full Spectrum Oil", method: "Oral Drops", desc: "General balance for daily wellness." };
-            contentDiv.innerHTML = `<div class="animate-fade-in-up"><h4 class="text-sage-300 text-sm font-bold uppercase tracking-wider mb-2">Suggestion</h4><h2 class="text-3xl font-serif font-bold mb-4 text-white">${data.title}</h2><div class="grid grid-cols-2 gap-4 mb-6"><div class="bg-sage-800/50 backdrop-blur p-4 rounded-xl border border-sage-700"><span class="block text-xs text-sage-300 uppercase mb-1">Formulation</span><span class="text-xl font-bold text-white">${data.strain}</span></div><div class="bg-sage-800/50 backdrop-blur p-4 rounded-xl border border-sage-700"><span class="block text-xs text-sage-300 uppercase mb-1">Delivery</span><span class="text-xl font-bold text-white">${data.method}</span></div></div><p class="text-sage-100 leading-relaxed">${data.desc}</p></div>`;
+            let title = "", product = "", desc = "";
+            
+            if (goal === 'energy') {
+                title = "Focus & Work"; product = "HELIOM FLOW";
+                desc = "You need to silence the noise without feeling sleepy. Flow uses a micro-dose 1:1 ratio to calm the amygdala while keeping your mind sharp.";
+            } else if (goal === 'relax') {
+                title = "Anxiety Relief"; product = "HELIOM FLOW";
+                desc = "Generalized anxiety requires balance. Flow restores homeostasis, allowing you to function socially and professionally without stress.";
+            } else if (goal === 'sleep') {
+                title = "Deep Sleep"; product = "HELIOM PRO";
+                desc = "Insomnia requires a heavy hitter. Pro is a high-potency, THC-dominant formulation designed to shut down the system and force recovery.";
+            } else {
+                title = "Full System Reset"; product = "HELIOM SYSTEM";
+                desc = "Why choose? To own the full 24-hour cycle, you need Flow for the day and Pro for the night. Get the bundle for total bio-hacking.";
+            }
+
+            contentDiv.innerHTML = `
+                <div class="animate-fade-in-up">
+                    <h4 class="text-sage-300 text-sm font-bold uppercase tracking-wider mb-2">Recommendation: ${title}</h4>
+                    <h2 class="text-4xl font-serif font-bold mb-4 text-white">${product}</h2>
+                    <p class="text-sage-100 leading-relaxed text-lg mb-6">${desc}</p>
+                    <a href="#products" class="inline-block bg-white text-sage-900 px-6 py-3 rounded-lg font-bold hover:bg-sage-100 transition">View Product</a>
+                </div>
+            `;
         }
 
-        function toggleChat() { document.getElementById('chat-window').classList.toggle('open'); }
-        function handleFAQ(type) {
-            const msgs = document.getElementById('chat-messages');
-            let q = "", a = "";
-            if (type === 'vault') { q = "How to order?"; a = "Select 'Consult to Order'. You will be connected with a doctor to provide a prescription."; }
-            else if (type === 'safety') { q = "Is it safe?"; a = "When taken under medical supervision, yes. Avoid if you have a history of heart issues or psychosis."; }
-            else if (type === 'contact') { q = "Speak to Doctor"; a = "Call Adithya Reddy at <strong>+91 90594 73960</strong>."; }
-            const userDiv = document.createElement('div'); userDiv.className = 'message user-msg'; userDiv.innerText = q; msgs.appendChild(userDiv); msgs.scrollTop = msgs.scrollHeight;
-            setTimeout(() => { const botDiv = document.createElement('div'); botDiv.className = 'message bot-msg'; botDiv.innerHTML = a; msgs.appendChild(botDiv); msgs.scrollTop = msgs.scrollHeight; }, 600);
+        // --- 7. Modal Logic ---
+        const modal = document.getElementById('notify-modal');
+        function openModal(name) {
+            document.getElementById('modal-product-name').textContent = `Get notified when we launch ${name}.`;
+            document.getElementById('modal-form-content').classList.remove('hidden');
+            document.getElementById('modal-success-content').classList.add('hidden');
+            modal.classList.remove('hidden');
         }
-        function scrollToSection(id) { document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); }
+        function closeModal() { modal.classList.add('hidden'); }
+        function handleSubscribe(e) {
+            e.preventDefault();
+            document.getElementById('modal-form-content').classList.add('hidden');
+            document.getElementById('modal-success-content').classList.remove('hidden');
+        }
+
+        // --- 8. SENTINEL BOT LOGIC ---
+        const chatWindow = document.getElementById('sentinel-window');
+        const chatMessages = document.getElementById('sentinel-messages');
+        const chatInput = document.getElementById('sentinel-input');
+
+        function toggleChat() {
+            const isHidden = chatWindow.style.display === 'none' || chatWindow.style.display === '';
+            chatWindow.style.display = isHidden ? 'flex' : 'none';
+            if (isHidden) chatInput.focus();
+        }
+
+        function handleChat(e) {
+            e.preventDefault();
+            const txt = chatInput.value.trim();
+            if (!txt) return;
+
+            // Add User Message
+            addMessage(txt, 'user');
+            chatInput.value = '';
+
+            // Process Bot Response
+            setTimeout(() => {
+                const response = getSentinelResponse(txt);
+                addMessage(response, 'bot');
+            }, 600); // Slight delay for "processing" feel
+        }
+
+        function addMessage(text, sender) {
+            const div = document.createElement('div');
+            div.className = `msg msg-${sender}`;
+            div.innerHTML = text;
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function getSentinelResponse(input) {
+            const lower = input.toLowerCase();
+
+            // 1. Legal Safety
+            if (lower.includes('legal') || lower.includes('allowed') || lower.includes('law')) {
+                return "Yes. Heliom products are Schedule E-1 Ayurvedic Medicines approved under the Ayush Ministry. They contain Vijaya Leaf Extract and are legal to purchase with a valid prescription, which our doctor provides after checkout.";
+            }
+
+            // 2. Medical Disclaimer (Cancer, etc)
+            if (lower.includes('cancer') || lower.includes('disease') || lower.includes('cure') || lower.includes('medical advice') || lower.includes('diagnose')) {
+                return "I cannot offer medical advice for serious conditions. Please consult your physician. Our products are for symptom management of pain, sleep, and stress.";
+            }
+
+            // 3. The High
+            if (lower.includes('high') || lower.includes('stoned') || lower.includes('trip') || lower.includes('psychoactive')) {
+                return "Heliom FLOW (1:1) provides a mild, manageable psychoactive effect conducive to flow states. Heliom PRO (High THC) has a stronger sedative effect. These are medicinal products, not recreational.";
+            }
+
+            // 4. Upsell (Flow vs Pro)
+            if ((lower.includes('flow') && lower.includes('pro')) || lower.includes('which') || lower.includes('difference') || lower.includes('recommend') || lower.includes('unsure') || lower.includes('better')) {
+                return "If you are unsure, I recommend the Heliom SYSTEM (Bundle). It allows you to manage both day (Flow) and night (Pro) cycles effectively.";
+            }
+
+            // 5. Driving
+            if (lower.includes('drive') || lower.includes('driving') || lower.includes('car') || lower.includes('operate')) {
+                return "No. Do not drive or operate heavy machinery for at least 6-8 hours after consumption.";
+            }
+
+            // 6. Drug Test
+            if (lower.includes('drug') || lower.includes('test') || lower.includes('screen') || lower.includes('testing')) {
+                return "Yes. Since our products contain Full Spectrum Vijaya Extract (THC), it may be detected in standard drug screenings.";
+            }
+
+            // 7. Prescription
+            if (lower.includes('prescription') || lower.includes('doctor') || lower.includes('script')) {
+                return "It is included in your purchase. After you pay, our partner doctor will review your details and call you to approve the order. It is a seamless process.";
+            }
+            
+            // 8. General Needs
+            if (lower.includes('sleep') || lower.includes('insomnia')) return "For sleep, use Heliom PRO. It forces system shutdown.";
+            if (lower.includes('focus') || lower.includes('work')) return "For focus, use Heliom FLOW. It quiets the noise.";
+            if (lower.includes('pain')) return "For pain, Heliom PRO provides the strongest relief.";
+
+            // 9. Greetings
+            if (lower.includes('hello') || lower.includes('hi') || lower.includes('hey')) {
+                return "SENTINEL ONLINE. State your wellness objective or query.";
+            }
+
+            // Default
+            return "I do not have data on that specific query. I will connect you with a human specialist.";
+        }
     </script>
 </body>
 </html>
